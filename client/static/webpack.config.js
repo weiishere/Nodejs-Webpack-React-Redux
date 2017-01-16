@@ -3,7 +3,8 @@ var webpack = require('webpack');
 module.exports = {
     // 页面入口文件配置
     entry : {
-        'view/main/index':'./js/view/main/index.js'
+        'view/main/index':'./js/view/main/index.js',
+        'viewPanel':'./js/view/main/viewPanel.js'
     },
     // 入口文件输出配置
     output : {
@@ -22,9 +23,10 @@ module.exports = {
             loader:'style-loader!css-loader'
         }
         ]        
-    },
+    }, 
     // 其他解决方案配置
     resolve: {
+        //自动扩展文件后缀名，意味着我们require模块可以省略不写后缀名
         extensions: ['', '.js', '.jsx', '.css', '.json'],
     },
     // 插件项

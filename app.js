@@ -15,6 +15,9 @@ app.get('/data/:module',function(req,res,next){
 app.get('/', function(req, res) {
     res.render('index');
 });
+app.get('/viewPanel', function(req, res) {
+    res.render('viewPanel');
+});
 
 // 设置views路径和模板
 app.set('views', './client/view');
