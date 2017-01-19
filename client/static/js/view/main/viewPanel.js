@@ -1,1 +1,4 @@
-require('../../../js/store/lufylegend-1.10.1.min.js');
+
+require('../../../js/store/core.js');
+
+

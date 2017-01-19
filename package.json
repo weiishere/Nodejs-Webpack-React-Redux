@@ -20,6 +20,7 @@
     "jsx-loader": "^0.13.2",
     "nodemon": "^1.10.0",
     "react": "^15.3.0",
+    "react-dom": "^15.4.2",
     "style-loader": "^0.13.1",
     "webpack": "^1.13.1"
   }
