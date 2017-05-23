@@ -15,9 +15,9 @@ app.get('/data/:module',function(req,res,next){
 app.get('/', function(req, res) {
     res.render('index');
 });
-app.get('/viewPanel', function(req, res) {
-    res.render('viewPanel');
-});
+// app.get('/viewPanel', function(req, res) {
+//     res.render('viewPanel');
+// });
 
 // 设置views路径和模板
 app.set('views', './client/view');
@@ -27,8 +27,8 @@ app.engine('html', ejs.renderFile);
 // 静态文件配置
 app.use('/client/static', express.static(path.join(__dirname, 'client/static')));
 
-// 启动一个服务，监听从8888端口进入的所有连接请求
-var server = app.listen(8888, function(){
+// 启动一个服务，监听从8800端口进入的所有连接请求
+var server = app.listen(8800, function(){
     var host = server.address().address;
     var port = server.address().port;
     console.log('Listening at http://%s:%s', host, port);

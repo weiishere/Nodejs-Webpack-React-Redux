@@ -2,6 +2,7 @@ var EventEmitter=require('events').EventEmitter;
 
 class Store_MessageList extends EventEmitter{
     constructor(){
+        super();
         this.allData=null;
     }
     getAllData(callback){
