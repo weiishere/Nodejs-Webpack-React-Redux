@@ -60,11 +60,11 @@ if (isDev) {
   }));
 
 
-//   app.use(require('webpack-hot-middleware')(compiler, {
-//     log: logger.info,
-//     path: '/__webpack_hmr',
-//     heartbeat: 10 * 1000
-//   }));
+  app.use(require('webpack-hot-middleware')(compiler, {
+    log: logger.info,
+    path: '/__webpack_hmr',
+    heartbeat: 10 * 1000
+  }));
 }
 //get client IP
 app.use((req, res, next) => {

@@ -19,7 +19,7 @@ const webpackConfig = {
   devtool: 'source-map', //生成 source map文件
   resolve: {
     //自动扩展文件后缀名
-    extensions: ['','.js', '.less', '.png', '.jpg', '.gif'],
+    extensions: ['.js', '.less', '.png', '.jpg', '.gif'],
     //模块别名定义，方便直接引用别名
     // alias: {
     //   'react-router-redux': path.resolve(nodeModules, 'react-router-redux-fixed/lib/index.js'),
@@ -29,7 +29,7 @@ const webpackConfig = {
   // 入口文件 让webpack用哪个文件作为项目的入口
   entry: {
     //index:['./client/pages/index/index','webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=true']
-    index:['./client/pages/index/index','webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=true']
+    index:['./client/pages/index/index','webpack-hot-middleware/client?path=/__webpack_hmr&timeout=1000&reload=true']
   },
 
   // 出口 让webpack把处理完成的文件放在哪里
