@@ -19,7 +19,7 @@ const webpackConfig = {
   devtool: 'source-map', //生成 source map文件
   resolve: {
     //自动扩展文件后缀名
-    extensions: ['.js', '.less', '.png', '.jpg', '.gif'],
+    extensions: ['','.js', '.less', '.png', '.jpg', '.gif'],
     //模块别名定义，方便直接引用别名
     // alias: {
     //   'react-router-redux': path.resolve(nodeModules, 'react-router-redux-fixed/lib/index.js'),
