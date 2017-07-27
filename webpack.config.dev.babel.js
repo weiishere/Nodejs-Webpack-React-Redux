@@ -29,7 +29,7 @@ const webpackConfig = {
   // 入口文件 让webpack用哪个文件作为项目的入口
   entry: {
     //index:['./client/pages/index/index','webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=true']
-    index:['./client/pages/index/index','webpack-hot-middleware/client?path=/__webpack_hmr&timeout=1000&reload=true']
+    index:['./client/pages/index/index','webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=true']
   },
 
   // 出口 让webpack把处理完成的文件放在哪里
