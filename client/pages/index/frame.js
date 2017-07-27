@@ -4,12 +4,8 @@ import { render } from 'react-dom';
 import { combineReducers } from 'redux-immutable';
 import { Route, IndexRoute } from 'react-router';
 
-
-class Fream extends Component {
-    constructor(options) {
-        super(options)
-    }
-    static childContentTypes = {
-
+class Frame extends Component{
+    constructor(options){
+        super(options);
     }
 }
