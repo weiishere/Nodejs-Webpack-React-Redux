@@ -116,18 +116,17 @@ const renderTemplateSync = function (request, response, data) {
  * @param next
  */
 const renderIndex = function (req, res, next) {
-  res.redirect('/index');
+  res.redirect('/showPlatform');
 };
 
 function addRoute(app, options) {
-  app.get('/index**',function (req, res, next) {
+  app.get('/showPlatform**',function (req, res, next) {
     renderTemplateSync(req,res,{
-      title:'系统首页',
-      name:'index',
+      title:'项目展示平台',
+      name:'showPlatform',
       scripts:""
     })
   })
-
 
   
   app.get('/', function (req, res, next) {
@@ -147,6 +146,6 @@ function addRoute(app, options) {
 
     renderIndex(req, res, next);
   });
-}
+} 
 
 module.exports = addRoute;

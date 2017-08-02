@@ -3,6 +3,7 @@
 const http = require('http');
 const config = require('../server/config');
 const app = require('../server');
+const db = require('../server/db');
 
 /**
  * Create HTTP server.
@@ -56,5 +57,11 @@ function onListening() {
     ? 'pipe ' + addr
     : 'port ' + addr.port;
   console.info('Listening on ' + bind);
+  // promise.connection.on("error", function (error) {
+  //   console.log("数据库连接失败：" + error);
+  // });
+  db.then(function(){
+    console.log('-数据库连接成功-');
+  });
   //console.info(`current env is [${process.env.NODE_ENV}]`);
 }

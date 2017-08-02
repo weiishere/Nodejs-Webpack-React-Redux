@@ -4,7 +4,6 @@
  * how to use ?
  * const logger = require('/path/to/mylogger').Logger;
  *
- * Created by tanxiangyuan on 2016/12/20.
  */
 const winston = require('winston');
 const path = require('path');

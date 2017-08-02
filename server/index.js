@@ -11,6 +11,7 @@ const getClientIP = require('./helper/utils').getClientIP;
 const apiRouter = require('./routes/api-route-loader');
 const pageRouter = require('./routes/routes');
 
+
 logger.info(`process.env.NODE_ENV is [${process.env.NODE_ENV}]`);
 const isDev = process.env.NODE_ENV === 'development';
 const isProduct = process.env.NODE_ENV === 'product';
@@ -23,10 +24,10 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 //非生产环境开启Gzip，生产环境nginx会开启gzip
 if (!isProduct) {
-    app.use(compress());
+  app.use(compress());
 }
-app.use(bodyParser.json({limit: '20mb'}));//设置前端post提交最大内容
-app.use(bodyParser.urlencoded({limit: '20mb', extended: false}));
+app.use(bodyParser.json({ limit: '20mb' }));//设置前端post提交最大内容
+app.use(bodyParser.urlencoded({ limit: '20mb', extended: false }));
 app.use(bodyParser.text());
 app.use(cookieParser());//解释Cookie的工具，通过req.cookies可以取到传过来的cookie，并把它们转成对象
 app.use(require('./helper/requestLogger').create(logger));
@@ -66,6 +67,7 @@ if (isDev) {
     heartbeat: 10 * 1000
   }));
 }
+
 //get client IP
 app.use((req, res, next) => {
   req.headers.clientIP = getClientIP(req);

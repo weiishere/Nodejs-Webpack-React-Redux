@@ -1,6 +1,4 @@
-/**
- * Created by tanxiangyuan on 2016/11/24.
- */
+
 const onFinished = require('on-finished');
 module.exports.create = function (logger) {
 
