@@ -37,7 +37,7 @@ function addRoute(app, options) {
                 if (['/api-route-loader', '/routes'].indexOf(routeName) == -1) {
                     const obj = require('.' + routeName);
                     logger.info(`=======================add api route automatic:${routeName}`);
-                    app.use('/' + routeName, obj);
+                    app.use(routeName, obj);
                 }
             }
         });

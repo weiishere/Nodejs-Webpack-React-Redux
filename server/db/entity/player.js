@@ -9,6 +9,7 @@ const playerSchema = new mongoose.Schema({
     weight: Number,
     club: String,
     position: String,
+    price:String
 });
 
 var Player = mongoose.model('Player', playerSchema);

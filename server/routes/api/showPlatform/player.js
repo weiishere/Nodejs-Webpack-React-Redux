@@ -13,34 +13,35 @@ router.get('/list', (req, res, next) => {
 
 
 router.post('/add', (req, res, next) => {
-    const { name, birthday,height,weight,club,position } = req.body;
+    const { name, birthday, height, weight, club, position, price } = req.body;
     service.create({
-        //name, birthday,height,weight,club,position
-        name: "大卫路易斯",
-        birthday: (new Date(1986, 2, 27, 12, 59, 59, 999)),
-        height: 190,
-        weight: 88,
-        club: "切尔西",
-        position: "CB",
+        name, birthday, height, weight, club, position, price
     }, function (player) {
-        res.json("player添加成功!");
+        res.json({ code: '0000', newPlayer: player });
     }, function (error) {
-        res.json(error);
+        res.json({ code: '0001', error: error });
     });
 });
 router.post('/update', (req, res, next) => {
-  const {id, name, birthday,height,weight,club,position } = req.body;
-  service.update({id, name, birthday,height,weight,club,position },function(){
-      
-  },function(){
+    const { id, name, birthday, height, weight, club, position,price } = req.body;
+    service.update({ id, name, birthday, height, weight, club, position,price }, function () {
 
-  })
+    }, function () {
+
+    })
+});
+router.post('/remove', (req, res, next) => {
+    const { id } = req.body;
+    service.delete(id, function () {
+        res.json({ code: '0000' });
+    }, function (error) {
+        res.json({ code: '0000', newPlayer: error });
+    })
 });
 
-
 router.get('/getOne', (req, res, next) => {
-    const { playerId } = req.query;
-    service.get(playerId, function (player) {
+    const { _id } = req.query;
+    service.get(_id, function (player) {
         res.json(player);
     }, function () {
         res.json("error");

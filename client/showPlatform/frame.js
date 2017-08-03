@@ -13,15 +13,23 @@ class Frame extends Component {
     constructor(options) {
         super(options);
     }
+    static childContextTypes = {
+        mainProps: React.PropTypes.object.isRequired
+    }
+    getChildContext() {
+        return {
+            mainProps: this.props
+        }
+    }
     render() {
         const _height = (window.innerHeight - 120) + 'px';
         const contentStyle = {
             minHeight: _height,
             width: '82%',
-            padding:'1%',
+            padding: '1%',
             background: '#fff',
             overflow: 'auto',
-            display:"inline-block",
+            display: "inline-block",
             borderLeft: 'solid 1px #ccc'
         }
         return (
@@ -34,9 +42,9 @@ class Frame extends Component {
                     </div>
                 </Header>
 
-                <Content style={{ boxShadow: '0 0 5px #ccc',padding:'0 20px' }}>
+                <Content style={{ boxShadow: '0 0 5px #ccc', padding: '0 20px' }}>
                     <Layout style={{ background: '#fff' }}>
-                        <Sider style={{ background: '#fff', width: '15%',display:"inline-block",verticalAlign:'top' }}>
+                        <Sider style={{ background: '#eee', width: '15%', display: "inline-block", verticalAlign: 'top' }}>
                             <SideBar />
                         </Sider>
                         <Content style={contentStyle}>
@@ -47,7 +55,7 @@ class Frame extends Component {
                 </Content>
                 <Footer className='footer'>版权莫有，侵权随意</Footer>
             </Layout>
-           
+
         )
     }
 }
