@@ -23,11 +23,19 @@ router.post('/add', (req, res, next) => {
     });
 });
 router.post('/update', (req, res, next) => {
-    const { id, name, birthday, height, weight, club, position,price } = req.body;
-    service.update({ id, name, birthday, height, weight, club, position,price }, function () {
-
-    }, function () {
-
+    // const { _id } = req.body;
+    // service.delete(_id, function () {
+    //     res.json({ code: '0000' });
+    // }, function (error) {
+    //     res.json({ code: '0000', newPlayer: error });
+    // })
+    const { _id, name, birthday, height, weight, club, position, price } = req.body;
+    service.update({ 
+        _id, name, birthday, height, weight, club, position, price 
+    }, function (player) {
+        res.json({ code: '0000', newPlayer: player });
+    }, function (error) {
+        res.json({ code: '0000', error: error });
     })
 });
 router.post('/remove', (req, res, next) => {

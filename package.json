@@ -11,7 +11,7 @@
   "author": "wei.huang",
   "license": "ISC",
   "dependencies": {
-    "antd": "^2.7.4",
+    "antd": "2.7.4",
     "babel-plugin-transform-object-assign": "^6.22.0",
     "body-parser": "latest",
     "classnames": "^2.2.5",

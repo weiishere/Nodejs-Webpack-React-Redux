@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ReactDom from 'react-dom';
 import { connect } from 'react-redux';
-import { Form, Input, Button, Checkbox, DatePicker, Select, Table, Row, Col, Popconfirm } from 'antd';
+import { Form, message, Input, InputNumber, Button, Checkbox, DatePicker, Select, Table, Row, Col, Popconfirm } from 'antd';
 import actions from './action';
 import moment from 'moment';
 import DetailPanel from './detailPanel';
@@ -14,17 +14,28 @@ class App1 extends Component {
         super(props);
         this.state = {
             modalVisible: false,
-            showPlayer: {}
+            showPlayer: {},
+            isloading: false
         };
         this.handleAdd = this.handleAdd.bind(this);
+        this.handleDetails = this.handleDetails.bind(this);
     }
     static contextTypes = {
         router: React.PropTypes.object.isRequired,
         mainProps: React.PropTypes.object.isRequired,
     }
+    // static childContextTypes = {
+    //     mainProps: React.PropTypes.object.isRequired
+    // }
+    // getChildContext() {
+    //     return {
+    //         parent: this.props
+    //     }
+    // }
     handleAdd = () => {
         this.props.form.validateFields(
             (err) => {
+                let self = this;
                 if (!err) {
                     const fields = this.props.form.getFieldsValue();
                     let { name, birthday, height, weight, club, position, price } = fields;
@@ -33,9 +44,10 @@ class App1 extends Component {
                         name, birthday, height, weight, club, position, price
                     }, function (result) {
                         if (result.code === '0000') {
-
+                            message.success('球员信息已经成功添加~');
+                            self.handleSearch();
                         } else {
-
+                            message.error('添加出现错误：' + result.error);
                         }
                     }));
                 }
@@ -44,11 +56,16 @@ class App1 extends Component {
     }
     handleDelete(record) {
         this.props.dispatch(actions.removePlayer(record._id, function (result) {
-
+            if (result.code === '0000') {
+                message.success('球员信息已经成功删除~');
+            } else {
+                message.error('删除出现错误：' + result.error);
+            }
         }));
     }
-    handleDetails(record){
-        this.setState({modalVisible:true});
+    handleDetails(record) {
+        this.setState({ modalVisible: record ? true : false });
+        if (record) this.setState({ showPlayer: record });
     }
     handleSearch(pageNum) {
         this.props.dispatch(actions.getPalyerList());
@@ -84,6 +101,8 @@ class App1 extends Component {
                 )
             },
         ];
+        //这里需要注意一下，为什么不直接用<DetailPanel/>进行初始化占位（因为如果不重新初始化子组件，里面的input会涉及到约束性组件的问题而造成input值自动更新异常）
+        const modalPanelsite = this.state.modalVisible ? <DetailPanel modalVisible={this.state.modalVisible} player={this.state.showPlayer} close={this.handleDetails} /> : "";
         return (
             <div>
                 <div className='wrapperItem'>
@@ -123,10 +142,10 @@ class App1 extends Component {
                                             initialValue: 180,
                                             rules: [{
                                                 required: true,
-                                                message: 'Please input player height',
+                                                message: 'Please input player height(150~250)',
                                             }],
                                         })(
-                                        <Input placeholder="Please input player height" />
+                                        <InputNumber min={150} max={250} placeholder="Please input player height" />
                                         )}
                                 </FormItem>
                             </Col>
@@ -136,10 +155,10 @@ class App1 extends Component {
                                         initialValue: 80,
                                         rules: [{
                                             required: true,
-                                            message: 'Please input player weight',
+                                            message: 'Please input player weight(40~150)',
                                         }],
                                     })(
-                                        <Input placeholder="Please input player weight" />
+                                        <InputNumber min={40} max={150} placeholder="Please input player weight" />
                                         )}
                                 </FormItem>
                             </Col>
@@ -160,41 +179,54 @@ class App1 extends Component {
                             </Col>
                             <Col span={6}>
                                 <FormItem {...formItemLayout} label='擅长位置'>
-                                    {getFieldDecorator('position', { initialValue: "BENCH" })(
+                                    {getFieldDecorator('position', {
+                                        initialValue: "BENCH",
+                                        rules: [{
+                                            required: true,
+                                            message: 'Please input player position',
+                                        }],
+                                    })(
                                         <Select style={{ width: '100%' }}>
-                                            <Option value="BENCH">饮水机</Option>
-                                            <Option value="CF">中锋</Option>
-                                            <Option value="SS">影锋</Option>
-                                            <Option value="LMF">左边前卫</Option>
-                                            <Option value="RMF">右边前卫</Option>
-                                            <Option value="AMF">前腰</Option>
-                                            <Option value="DMF">后腰</Option>
-                                            <Option value="SW">清道夫</Option>
-                                            <Option value="LWB">左边后卫</Option>
-                                            <Option value="RWB">右边后卫</Option>
-                                            <Option value="CB">中后卫</Option>
-                                            <Option value="GK">守门员</Option>
-                                            <Option value="FREE">自由人</Option>
-                                            <Option value="STICK">屠夫</Option>
-                                            <Option value="MANGLER">绞肉机</Option>
+                                            <Select.Option value="BENCH">饮水机</Select.Option>
+                                            <Select.Option value="CF">中锋</Select.Option>
+                                            <Select.Option value="SS">影锋</Select.Option>
+                                            <Select.Option value="CMF">中前卫</Select.Option>
+                                            <Select.Option value="LMF">左边前卫</Select.Option>
+                                            <Select.Option value="RMF">右边前卫</Select.Option>
+                                            <Select.Option value="AMF">前腰</Select.Option>
+                                            <Select.Option value="DMF">后腰</Select.Option>
+                                            <Select.Option value="SW">清道夫</Select.Option>
+                                            <Select.Option value="LWB">左边后卫</Select.Option>
+                                            <Select.Option value="RWB">右边后卫</Select.Option>
+                                            <Select.Option value="CB">中后卫</Select.Option>
+                                            <Select.Option value="GK">守门员</Select.Option>
+                                            <Select.Option value="FREE">自由人</Select.Option>
+                                            <Select.Option value="STICK">屠夫</Select.Option>
+                                            <Select.Option value="MANGLER">绞肉机</Select.Option>
                                         </Select>
-                                    )}
+                                        )}
 
                                 </FormItem>
                             </Col>
                             <Col span={6}>
                                 <FormItem {...formItemLayout} label='球员身价(GBP)'>
-                                    {getFieldDecorator('price', { initialValue: "0~500" })(
+                                    {getFieldDecorator('price', {
+                                        initialValue: "0~500",
+                                        rules: [{
+                                            required: true,
+                                            message: 'Please input player price',
+                                        }],
+                                    })(
                                         <Select style={{ width: '100%' }}>
-                                            <Option value="0~500">0~500万</Option>
-                                            <Option value="500~1000">500~1000万</Option>
-                                            <Option value="1000~2000">1000~2000万</Option>
-                                            <Option value="2000~3000">2000~3000万</Option>
-                                            <Option value="3000~4000">3000~4000万</Option>
-                                            <Option value="4000~5000">4000~5000万</Option>
-                                            <Option value="5000+">5000万以上</Option>
+                                            <Select.Option value="0~500">0~500万</Select.Option>
+                                            <Select.Option value="500~1000">500~1000万</Select.Option>
+                                            <Select.Option value="1000~2000">1000~2000万</Select.Option>
+                                            <Select.Option value="2000~3000">2000~3000万</Select.Option>
+                                            <Select.Option value="3000~4000">3000~4000万</Select.Option>
+                                            <Select.Option value="4000~5000">4000~5000万</Select.Option>
+                                            <Select.Option value="5000+">5000万以上</Select.Option>
                                         </Select>
-                                    )}
+                                        )}
 
                                 </FormItem>
                             </Col>
@@ -207,17 +239,21 @@ class App1 extends Component {
                     </Form>
                 </div>
                 <div className='wrapperItem' style={{ marginTop: '13px' }}>
-                    <h2>查询结果</h2>
+                    <h2>列名球员</h2>
                     <div style={{ margin: '20px 0' }}>
                         <Table
                             rowKey={record => record._id}
                             columns={columns}
                             dataSource={this.props.playerList}
                             columns={columns}
+                            loading={this.state.isloading}
+                            pagination={{
+                                pageSize: 5,
+                            }}
                         />
                     </div>
                 </div>
-                <DetailPanel modalVisible={this.state.modalVisible} player={this.state.showPlayer} />
+                {modalPanelsite}
             </div>
         );
     }

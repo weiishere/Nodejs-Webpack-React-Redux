@@ -32,9 +32,9 @@ const addPlayer = ((palyer, callback) => {
         }).then(function (res) {
             return res.json();
         }).then(function (json) {
-            if (json.code === "0000") {
-                dispatch(getPalyerList());
-            }
+            // if (json.code === "0000") {
+            //     dispatch(getPalyerList());
+            // }
             if (callback) callback(json);
         }).catch(function (error) {
             console.log('Request failed', error);

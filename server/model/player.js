@@ -16,16 +16,25 @@ module.exports = {
         });
     },
     update: function (player, callback, error) {
-        const id = player.id;
+        const id = player._id;
         const playerParams = player;
         playerEntity.findById(id, function (err, player) {
             if (err) {
                 error(err);
             } else {
-                const _player = _.extend(player, playerParams);
-                _player.save(function (err, player) {
-                    if (err) error(err); else callback();
-                })
+                if (player) {
+                    player = Object.assign(player, playerParams);
+                    player.save(function (err, player) {
+                        if (err) {
+                            error(err);
+                        } else {
+                            callback(player);
+                        }
+                    })
+                } else {
+                    error('no recode');
+                }
+
             }
         })
     },
