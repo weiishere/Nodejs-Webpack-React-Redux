@@ -23,10 +23,10 @@ class SideBar extends Component {
         return (
             <aside className='menuWrap'>
                 <nav>
+                    <a href="javascript:;" onClick={this.handleClick} value='/showPlatform/intro'>简要介绍</a>
                     <a href="javascript:;" onClick={this.handleClick} value='/showPlatform/app_1'>react-redux-mongodb</a>
-                    <a href="#">React组件式toast</a>
-                    <a href="#">接月饼游戏</a>
-                    <a href="#">1010游戏</a>
+                    <a href="javascript:;" onClick={this.handleClick} value='/showPlatform/cake'>接月饼游戏</a>
+                    <a href="javascript:;" onClick={this.handleClick} value='/showPlatform/1010'>1010游戏</a>
                     <a href="#">原生canvas俄罗斯方块</a>
                     <a href="#">SVG饼图组件</a>
                     <a href="#">iconFont</a>
