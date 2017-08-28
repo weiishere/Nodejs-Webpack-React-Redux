@@ -9,7 +9,12 @@ class Intro extends Component {
         super(props);
     }
     componentDidMount() {
-        PageCommon.init("page1", { defaultTransition: "slider" });
+        PageCommon.init("page1", {
+            defaultTransition: "slider", callback: function () {
+                var _height = $('.pages').height() - $("#page1 header").height();
+                $(".page section").height(_height);
+            }
+        });
         var page1 = new PageCommon.Page("page1", {
             init: function () {
                 console.log(this.id + " has init");
@@ -54,9 +59,11 @@ class Intro extends Component {
                     <div className="page" id="page1">
                         <header>
                             <h1>认识React</h1>
-                            <button role='right'>Next</button>
+                            <button data-icon="&#xe620;" role='right'></button>
                         </header>
                         <section>
+                            {/* <a data-icon="&#xe607;" className='backBtu'>back</a>
+                            <a className='iconfont'>&#xe607;</a> */}
                             <ul className='mainUl'>
                                 <li>React 是 Facebook 推出的一个用来构建用户界面的 JavaScript 库</li>
                                 <li>作为 MVC 架构的 V 层</li>
@@ -90,9 +97,9 @@ class Intro extends Component {
                     </div>
                     <div className="page" id="page2">
                         <header>
-                            <button role='back'>Back</button>
+                            <button data-icon="&#xe607;" role='back'></button>
                             <h1>Diff算法</h1>
-                            <button role='right'>Next</button>
+                            <button data-icon="&#xe620;" role='right'></button>
                         </header>
                         <section>
                             <div style={{ margin: '10px' }}>
@@ -110,29 +117,26 @@ class Intro extends Component {
                     </div>
                     <div className="page" id="page3">
                         <header>
-                            <button role='back'>Back</button>
+                            <button data-icon="&#xe607;" role='back'></button>
                             <h1>React的生命周期</h1>
-                            <button role='right'>Next</button>
-                            <section>
-                                <div style={{ margin: '10px' }}>
-                                    1：首次挂载到DOM（挂载到DOM流程在组件的整个生命周期只有一次，也就是组件第一次插入DOM文档流时。在挂载到DOM流程中的每一步也有相应的限制：
-                                    getDefaultProps()和getInitialState()中不能获取和设置组件的state。
-                                    render()方法中不能设置组件的state）<br />
-                                    <p style={{ textAlign: "center" }}><img src='/image/1112.png' /></p>
-                                    2：更新DOM（componentWillReceiveProps()提供了该流程中更新state的最后时机，渲染优化：在非必要的时候将shouldComponentUpdate返回值设置为false）<br />
-                                    <p style={{ textAlign: "center" }}><img src='/image/1113.png' /></p>
-                                </div>
-                            </section>
+                            <button data-icon="&#xe620;" role='right'></button>
                         </header>
                         <section>
-
+                            <div style={{ margin: '10px' }}>
+                                1：首次挂载到DOM（挂载到DOM流程在组件的整个生命周期只有一次，也就是组件第一次插入DOM文档流时。在挂载到DOM流程中的每一步也有相应的限制：
+                                    getDefaultProps()和getInitialState()中不能获取和设置组件的state。
+                                    render()方法中不能设置组件的state）<br />
+                                <p style={{ textAlign: "center" }}><img src='/image/1112.png' /></p>
+                                2：更新DOM（componentWillReceiveProps()提供了该流程中更新state的最后时机，渲染优化：在非必要的时候将shouldComponentUpdate返回值设置为false）<br />
+                                <p style={{ textAlign: "center" }}><img src='/image/1113.png' /></p>
+                            </div>
                         </section>
                     </div>
                     <div className="page" id="page4">
                         <header>
-                            <button role='back'>Back</button>
+                            <button data-icon="&#xe607;" role='back'></button>
                             <h1>虚拟DOM的意义</h1>
-                            <button role='right'>Next</button>
+                            <button data-icon="&#xe620;" role='right'></button>
                         </header>
                         <section>
                             <div style={{ margin: '10px' }}>
@@ -146,9 +150,9 @@ class Intro extends Component {
                     </div>
                     <div className="page" id="page5">
                         <header>
-                            <button role='back'>Back</button>
+                            <button data-icon="&#xe607;" role='back'></button>
                             <h1>React-redux</h1>
-                            <button role='right'>Next</button>
+                            <button data-icon="&#xe620;" role='right'></button>
                         </header>
                         <section>
                             <div style={{ margin: '10px' }}>
@@ -166,9 +170,9 @@ class Intro extends Component {
                     </div>
                     <div className="page" id="page6">
                         <header>
-                            <button role='back'>Back</button>
+                            <button data-icon="&#xe607;" role='back'></button>
                             <h1>react-redux模型</h1>
-                            <button role='right'>Home</button>
+                            <button data-icon="&#xe600;" role='right'></button>
                         </header>
                         <section>
                             <div style={{ margin: '10px' }}>

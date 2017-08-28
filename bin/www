@@ -57,11 +57,11 @@ function onListening() {
     ? 'pipe ' + addr
     : 'port ' + addr.port;
   console.info('Listening on ' + bind);
-  // promise.connection.on("error", function (error) {
-  //   console.log("数据库连接失败：" + error);
-  // });
-  db.then(function(){
-    console.log('-数据库连接成功-');
+  db.on("error", function (error) {
+    console.log("Mongdb连接失败：" + error);
+  });
+  db.then(function (conn) {
+    console.log('---mongo库"' + conn.db.databaseName + '"连接成功---');
   });
   //console.info(`current env is [${process.env.NODE_ENV}]`);
 }

@@ -18,9 +18,10 @@ var PageCommon = (function () {
             next: function () { }
         }, option || {});
         for (var i in o) { _self[i] = o[i] }
-        $("#" + _self.id).delegate("button[role='back']", "touchstart", function () {
+        //touchstart
+        $("#" + _self.id).delegate("button[role='back']", "click", function () {
             _self.back();
-        }).delegate("button[role='right']", "touchstart", function () {
+        }).delegate("button[role='right']", "click", function () {
             _self.next();
         });
         _self.init();
@@ -71,10 +72,14 @@ var PageCommon = (function () {
     result.init = function (homePage, option) {
         var _self = this;
         _self.set = $.extend({
-            defaultTransition: "slider"
+            defaultTransition: "slider",
+            callback:function(){}
         }, option || {});
         result.thisPage = homePage;
         $("#" + homePage).addClass("in-" + _self.set.defaultTransition);
+        window.setTimeout(function(){
+            _self.set.callback.call(_self);
+        },transitionArr['defaultTransition'])
     }
     return result;
 })();

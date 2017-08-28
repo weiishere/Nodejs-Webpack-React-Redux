@@ -362,6 +362,8 @@ var Result = (function (nameSpeace) {
     function Rabbit() {
         base(this, LSprite, []);
         var self = this;
+        this.speed = 5;//每次移动的速度
+        this.isRound = true;//是否移动到头，用于控制临时变相，在下次触碰前不变相
         self.setView();
     }
     Rabbit.prototype.setView = function () {
@@ -369,8 +371,6 @@ var Result = (function (nameSpeace) {
         self.y = 60;
         self.addChild(new LBitmap(new LBitmapData(imglist["rabbit"])));
     }
-    Rabbit.prototype.speed = 5;//每次移动的速度
-    Rabbit.prototype.isRound = true;//是否移动到头，用于控制临时变相，在下次触碰前不变相
     Rabbit.prototype.run = function () {
         var self = this;
         if (self.speed <= 0) {
@@ -397,7 +397,7 @@ var Result = (function (nameSpeace) {
     }
     //主角
     function Person() {
-        base(this, LSprite, []); var self = this; self.setView();
+        base(this, LSprite, []); var self = this;
         var isBeginMove = false;
         //if (!LGlobal.canTouch) {//判断当前浏览器是电脑还是只能手机，即判断是否可以触屏
         self.addEventListener(LMouseEvent.MOUSE_DOWN, function () { isBeginMove = true; });//按下
@@ -405,7 +405,8 @@ var Result = (function (nameSpeace) {
         backLayer.addEventListener(LMouseEvent.MOUSE_MOVE, move);//弹起
         //}
         var max_x = LGlobal.width - self.getWidth();
-
+        this.lastPostion_x = 0;
+        this.foodInPerson = new LSprite();
         function move(event) {
             if (isBeginMove) {
                 if (self.x <= 0) { self.x = 1; return; }
@@ -414,16 +415,15 @@ var Result = (function (nameSpeace) {
                 self.lastPostion_x = self.x;
             }
         }
-        Person.prototype.foodInPerson.removeAllChild();
+        this.foodInPerson.removeAllChild();
+        self.setView();
     }
-    Person.prototype.lastPostion_x = 0;
-    Person.prototype.foodInPerson = new LSprite();
     Person.prototype.setView = function (isHaveFood) {
         var self = this;
-        Person.prototype.foodInPerson.scaleX = Person.prototype.foodInPerson.scaleY = 0.3;
+        this.foodInPerson.scaleX = this.foodInPerson.scaleY = 0.3;
         self.foodInPerson.y = 0;
-        Person.prototype.foodInPerson.x = ((self.getWidth() + Person.prototype.foodInPerson.getWidth()) / 2) - 8;
-        self.addChild(Person.prototype.foodInPerson);
+        this.foodInPerson.x = ((self.getWidth() + this.foodInPerson.getWidth()) / 2) - 8;
+        self.addChild(this.foodInPerson);
         var _person = new LSprite();
         if (isHaveFood)
             _person.addChild(new LBitmap(new LBitmapData(imglist["person2"])));
@@ -434,8 +434,8 @@ var Result = (function (nameSpeace) {
     Person.prototype.getFood = function (food) {
         var self = this;
         self.removeAllChild();
-        Person.prototype.foodInPerson.removeAllChild();
-        Person.prototype.foodInPerson.addChild(new LBitmap(new LBitmapData(imglist[food.imgListName])));
+        this.foodInPerson.removeAllChild();
+        this.foodInPerson.addChild(new LBitmap(new LBitmapData(imglist[food.imgListName])));
         self.setView(true);
         var theTextField;
         self.foodInPerson.y = -40;
@@ -513,41 +513,48 @@ var Result = (function (nameSpeace) {
     }
     //月饼类
     function Cake(index) {
-        base(this, Food, []); var self = this; self.cakeIndex = index; self.setView(index);
+        base(this, Food, []); var self = this; self.cakeIndex = index; 
+        this.CHname = "月饼";
+        self.setView(index);
     }
     Cake.prototype.setView = function (index) {
         var self = this;
         self.imgListName = "cake_" + index;
         self.addChild(new LBitmap(new LBitmapData(imglist["cake_" + index])));
     }
-    Cake.prototype.CHname = "月饼";
     function Zongzi(index) {
-        base(this, Food, []); var self = this; self.setView(index);
+        base(this, Food, []); var self = this;
+        this.CHname = "粽子";
+        self.setView(index);
     }
     function Tangyuan(index) {
-        base(this, Food, []); var self = this; self.setView(index);
+        base(this, Food, []); var self = this;
+        this.CHname = "汤圆";
+        self.setView(index);
     }
     function Jiaozi(index) {
-        base(this, Food, []); var self = this; self.setView(index);
+        base(this, Food, []); var self = this;
+        this.CHname = "饺子";
+        self.setView(index);
     }
     Zongzi.prototype.setView = function (index) {
         var self = this;
         self.imgListName = "zongzi";
         self.addChild(new LBitmap(new LBitmapData(imglist["zongzi"])));
     }
-    Zongzi.prototype.CHname = "粽子";
+
     Tangyuan.prototype.setView = function (index) {
         var self = this;
         self.imgListName = "tangyuan";
         self.addChild(new LBitmap(new LBitmapData(imglist["tangyuan"])));
     }
-    Tangyuan.prototype.CHname = "汤圆";
+
     Jiaozi.prototype.setView = function (index) {
         var self = this;
         self.imgListName = "jiaozi";
         self.addChild(new LBitmap(new LBitmapData(imglist["jiaozi"])));
     }
-    Jiaozi.prototype.CHname = "饺子";
+
 
     var initTextField = function (text, color, size, x, y, iscenter) {
         var _text = new LTextField();
@@ -564,15 +571,16 @@ var Result = (function (nameSpeace) {
         base(this, LSprite, []);
         var self = this;
         self.sharpType = sharpType || "1";
+        self.value = 0;
+        self.changeSpeed = 0.1;
+        self.spacing = 0;//数字间隔
+        self.scale = 1;//放大倍数
+        self.sharpType = "1";//数字图形类别
         self.setView(num);
         self.value = num;
 
     }
-    Number.prototype.value = 0;
-    Number.prototype.changeSpeed = 0.1;
-    Number.prototype.spacing = 0;//数字间隔
-    Number.prototype.scale = 1;//放大倍数
-    Number.prototype.sharpType = "1";//数字图形类别
+
     Number.prototype.setView = function (num) {
         var self = this;
         var digit = (num + "").split("");
@@ -640,7 +648,10 @@ var Result = (function (nameSpeace) {
             //return init(30, "canvas", 640, 960, main);
             return LInit(30, "canvas", 640, 960, main, LEvent.INIT);
         },
-        removeAll: function () { if (sound) { sound.stop(); } if (backLayer) { backLayer.removeAllChild(); backLayer.die(); } }
+        removeAll: function () {
+            if (sound) { sound.stop(); }
+            if (backLayer) { backLayer.removeAllChild(); backLayer.die(); }
+        }
     }
 
 })({});

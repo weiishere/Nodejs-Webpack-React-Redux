@@ -92,11 +92,12 @@ var Result = (function (nameSpeace) {
             //nameSpeace.bgBlocks;
             //nameSpeace.BlocksWrap;
             //nameSpeace.activeBlock = undefined;
+            nameSpeace.imglist=[];
             nameSpeace.score_x = [];//横向清除行
             nameSpeace.score_y = [];//纵向清除列
             nameSpeace.version = "v2.53";
             nameSpeace.mySoundPlayer;
-            var imgData = new Array(
+            nameSpeace.imgData = new Array(
                 { name: "number1_0", path: "/image/1010/number1/number1_0.png" },
                 { name: "number1_1", path: "/image/1010/number1/number1_1.png" },
                 { name: "number1_2", path: "/image/1010/number1/number1_2.png" },
@@ -127,16 +128,16 @@ var Result = (function (nameSpeace) {
                 { name: "icon_voice", path: "/image/1010/icon_voice.png" }
             );
             if (nameSpeace.isClearCacheImg) {
-                for (var i = 0; i < imgData.length; i++) {
-                    if (imgData[i].type) { continue; }
-                    imgData[i].path = imgData[i].path + "?v=" +nameSpeace.version;// + $.now();
+                for (var i = 0; i < nameSpeace.imgData.length; i++) {
+                    if (nameSpeace.imgData[i].type) { continue; }
+                    nameSpeace.imgData[i].path = nameSpeace.imgData[i].path + "?v=" +nameSpeace.version;// + $.now();
                 }
             }
             // imgData.push({ name: "dropIn", path: "sound/s_dropIn.wav" });
             // imgData.push({ name: "dropInFail", path: "sound/s_dropInFail.wav" });
             // imgData.push({ name: "gameover", path: "sound/s_gameover.wav" });
             // imgData.push({ name: "getScore", path: "sound/s_getScore.wav" });
-            nameSpeace.dataList = imgData;
+            //nameSpeace.dataList = imgData;
         })(nameSpeace);
         //工具及扩展
         (function () {
@@ -258,7 +259,7 @@ var Result = (function (nameSpeace) {
                 _sprite.x = _option.x;
                 _sprite.y = _option.y;
                 if (_option.image != "") {
-                    var bitmap = new LBitmap(new LBitmapData(nameSpeace.dataList[_option.image]));
+                    var bitmap = new LBitmap(new LBitmapData(nameSpeace.imglist[_option.image]));
                     _sprite.addChild(bitmap);
                 }
                 if (_option.click) {
@@ -296,7 +297,7 @@ var Result = (function (nameSpeace) {
             Trip.prototype.setView = function () {
                 var _self = this;
                 var shape = new LShape();
-                var _text = createText(_self.text, { color: "#fff", size: 24 });
+                var _text = nameSpeace.createText(_self.text, { color: "#fff", size: 24 });
 
                 shape.graphics.drawRect(0, "#ff0000", [10, 10, _text.getWidth() + 40, 50], true, "#000000");
                 shape.y = 800; _text.y = 820;
@@ -339,11 +340,11 @@ var Result = (function (nameSpeace) {
             eventBackLayer = nameSpeace.createSprite();
             eventBackLayer.graphics.drawRect(1, "#cccccc", [0, 0, LGlobal.width, LGlobal.height], true, "#fff");
             //背景显示
-            addChild(backLayer);
             addChild(eventBackLayer);
+            addChild(backLayer);
             loadingLayer = new LoadingSample1();
             backLayer.addChild(loadingLayer);
-            LLoadManage.load(nameSpeace.dataList, function (progress) {
+            LLoadManage.load(nameSpeace.imgData, function (progress) {
                 loadingLayer.setProgress(progress);
             }, gameInit);
             //LGlobal.setDebug(true);
@@ -357,9 +358,10 @@ var Result = (function (nameSpeace) {
             //移除进度条层//移除或者这样写 loadingLayer.remove();
             //backLayer.removeChild(loadingLayer);
             backLayer.die();
+            //eventBackLayer.die();
             backLayer.removeAllChild();
-            backLayer.graphics.drawRect(0, "#cccccc", [0, 0, LGlobal.width, LGlobal.height], true, "#ffffff");
-            addChild(backLayer);
+            backLayer.graphics.drawRect(1, "#333333", [0, 0, LGlobal.width, LGlobal.height], true, "#ffffff");
+            //addChild(backLayer);
             //var method = function () {
             //    playSound("s_dropIn.mp3", function () { this.play(0, 1);});
             //    //MySoundPlayer.playSound("dropIn");
@@ -393,9 +395,9 @@ var Result = (function (nameSpeace) {
                         var btu = e.target;
                         nameSpeace.but_voice.removeAllChild();
                         if (!isAllowPlay) {
-                            nameSpeace.but_voice.addChild(new LBitmap(new LBitmapData(nameSpeace.dataList["icon_voice"])));
+                            nameSpeace.but_voice.addChild(new LBitmap(new LBitmapData(nameSpeace.imglist["icon_voice"])));
                         } else {
-                            nameSpeace.but_voice.addChild(new LBitmap(new LBitmapData(nameSpeace.dataList["icon_voice_close"])));
+                            nameSpeace.but_voice.addChild(new LBitmap(new LBitmapData(nameSpeace.imglist["icon_voice_close"])));
                         }
                         isAllowPlay = !isAllowPlay;
                     });
@@ -451,8 +453,8 @@ var Result = (function (nameSpeace) {
                 for (var i = 0; i < arr.length; i++) { arr[i].die(); }
                 var returnPage = new LSprite();
                 returnPage.addChild(nameSpeace.createSprite({ image: "over_bg" }));
-                returnPage.addChild(createText("游戏结束", { y: 220, color: "#ffffff", size: 40 }, function () { this.align(); }));
-                returnPage.addChild(createText(nameSpeace, { y: 390, color: "#ffffff", size: 40 }, function () { this.align(); }));
+                returnPage.addChild(nameSpeace.createText("游戏结束", { y: 220, color: "#ffffff", size: 40 }, function () { this.align(); }));
+                returnPage.addChild(nameSpeace.createText(nameSpeace, { y: 390, color: "#ffffff", size: 40 }, function () { this.align(); }));
 
                 if (nameSpeace.score1.value > nameSpeace.score2.value) {
                     returnPage.addChild(nameSpeace.createSprite({ image: "icon_share", x: 450, y: 380, click: function () { } }));
@@ -476,8 +478,14 @@ var Result = (function (nameSpeace) {
                 //初始化界面
                 var that = this;
                 addChild(initPages.indexPage());//这里不加入到backLayer之中，丢帧现象会好一些
+                var score12 = new Number("0"); 
+                score12.x = (LGlobal.width / 2 - score12.getWidth()) / 2; score12.y = 80;
+                //score1.defaultlength = 3;
+                score12.spacing = 4;
+                
                 BlocksWrap = nameSpeace.createSprite();
                 addChild(BlocksWrap);
+                
                 eventBackLayer.addEventListener(LMouseEvent.MOUSE_OUT, function (e) {
                     if (activeBlock) {
                         backLayer.addShape(LShape.RECT, [0, 0, 640, 960]);
@@ -548,9 +556,9 @@ var Result = (function (nameSpeace) {
 
                 });
                 
-                blockShape1.graphics.drawRoundRect(0, "#ff0000", [10, 760, 200, 200, 7], true, "#fff");
-                blockShape2.graphics.drawRoundRect(0, "#ff0000", [220, 760, 200, 200, 7], true, "#fff");
-                blockShape3.graphics.drawRoundRect(0, "#ff0000", [430, 760, 200, 200, 7], true, "#fff");
+                blockShape1.graphics.drawRoundRect(0, "#ff0000", [10, 750, 200, 200, 7], true, "#fff");
+                blockShape2.graphics.drawRoundRect(0, "#ff0000", [220, 750, 200, 200, 7], true, "#fff");
+                blockShape3.graphics.drawRoundRect(0, "#ff0000", [430, 750, 200, 200, 7], true, "#fff");
                 BlocksWrap.addChild(blockShape1);
                 BlocksWrap.addChild(blockShape2);
                 BlocksWrap.addChild(blockShape3);
@@ -913,7 +921,7 @@ var Result = (function (nameSpeace) {
             for (var i = 0; i < digit.length; i++) {
                 var sprite = new LSprite();
                 var num = parseInt(digit[i]);
-                sprite.addChild(new LBitmap(new LBitmapData(nameSpeace.dataList["number" + self.sharpType + "_" + num])));
+                sprite.addChild(new LBitmap(new LBitmapData(nameSpeace.imglist["number" + self.sharpType + "_" + num])));
                 sprite.scaleX = sprite.scaleY = self.scale;
                 spriteWrap.y = sprite.getHeight() / 2;
                 sprite.y = -sprite.getHeight() / 2;
@@ -990,7 +998,7 @@ var Result = (function (nameSpeace) {
             //return init(30, "canvas", 640, 960, main);
             return LInit(30, "canvas", 640, 960, main, LEvent.INIT);
         },
-        removeAll: function () { if (backLayer) { backLayer.removeAllChild(); backLayer.die(); } }
+        removeAll: function () { if (backLayer) { backLayer.removeAllChild();eventBackLayer.die(); backLayer.die(); } }
     }
 
 })({});

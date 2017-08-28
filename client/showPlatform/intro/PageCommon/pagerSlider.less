@@ -42,10 +42,23 @@
             color: #fff;
             border-radius: 0.5rem;
             outline: none;
+            -webkit-transition: all 0.3s ease-out;
             background-image: linear-gradient(to top, #000, #666);
+            &:active {
+                background-image: linear-gradient(to top, #666, #000)
+            }
+            &:hover {
+                box-shadow: 0 0 5px #fff;
+                color:#0cc 
+            }
+            font-family: 'iconfont';
+            &:after {
+                content: attr(data-icon);
+            }
         }
         button[role='right'] {
             right: .5rem;
+            font-size: 1.1rem;
         }
         button[role='left'],
         button[role='back'] {

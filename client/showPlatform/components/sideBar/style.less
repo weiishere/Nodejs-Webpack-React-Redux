@@ -9,12 +9,24 @@
         text-align: center;
         line-height: 3rem;
         margin: 0.4rem 0;
-        background: #f9f9f9;
+        background: rgba(249, 249, 249, 0.7);
         box-shadow: 0 .2rem .2rem #999;
         -webkit-transition: all 0.1s ease-out;
-        text-decoration:none;
+        text-decoration: none;
         color: #666;
-        &:hover{box-shadow:0 .1rem .1rem #999;margin-left: .3rem;background: #f3f3f3;}
+        &:hover {
+            box-shadow: 0 .1rem .1rem #999;
+            margin-left: .3rem;
+            background: #f3f3f3;
+        }
+        &.active {
+            background: #fff;
+            box-shadow: none;
+        }
     }
     overflow: hidden
+}
+
+.ant-layout-sider {
+    background: transparent
 }

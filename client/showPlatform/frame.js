@@ -27,7 +27,6 @@ class Frame extends Component {
             minHeight: _height,
             width: '82%',
             padding: '1%',
-            background: '#fff',
             overflow: 'auto',
             display: "inline-block",
             borderLeft: 'solid 1px #ccc'
@@ -43,8 +42,8 @@ class Frame extends Component {
                 </Header>
 
                 <Content style={{ boxShadow: '0 0 5px #ccc', padding: '0 20px' }}>
-                    <Layout style={{ background: '#fff' }}>
-                        <Sider style={{ background: '#eee', width: '15%', display: "inline-block", verticalAlign: 'top' }}>
+                    <Layout>
+                        <Sider style={{ width: '15%', display: "inline-block", verticalAlign: 'top' }}>
                             <SideBar />
                         </Sider>
                         <Content style={contentStyle}>

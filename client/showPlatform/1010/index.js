@@ -9,11 +9,10 @@ class Intro extends Component {
         super(props);
     }
     componentDidMount() {
-        game_10.removeAll();
         game_10.init();
     }
-    componentWillMount() {
-        //game_10.removeAll();
+    componentWillUnmount() {
+        game_10.removeAll();
     }
     render() {
         return (

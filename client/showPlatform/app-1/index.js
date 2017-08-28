@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ReactDom from 'react-dom';
 import { connect } from 'react-redux';
-import { Form, message, Input, InputNumber, Button, Checkbox, DatePicker, Select, Table, Row, Col, Popconfirm } from 'antd';
+import { Form, message, Input, InputNumber, Button, Checkbox, DatePicker, Select, Table, Row, Col, Popconfirm, Spin } from 'antd';
 import actions from './action';
 import moment from 'moment';
 import DetailPanel from './detailPanel';
@@ -13,7 +13,7 @@ class App1 extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            modalVisible: false,
+            modalVisible: false, 
             showPlayer: {},
             isloading: false
         };
@@ -246,7 +246,7 @@ class App1 extends Component {
                             columns={columns}
                             dataSource={this.props.playerList}
                             columns={columns}
-                            loading={this.state.isloading}
+                            loading={this.props.loading}
                             pagination={{
                                 pageSize: 5,
                             }}
@@ -261,7 +261,8 @@ class App1 extends Component {
 
 function mapStateToProps(state, ownProps) {
     const playerList = state.get('app_1').get("data").palyerList;
-    return { playerList }
+    const loading = state.get('app_1').get("data").loading;
+    return { playerList, loading }
 }
 
 export default connect(mapStateToProps)(Form.create()(App1));
