@@ -513,7 +513,7 @@ var Result = (function (nameSpeace) {
     }
     //月饼类
     function Cake(index) {
-        base(this, Food, []); var self = this; self.cakeIndex = index; 
+        base(this, Food, []); var self = this; self.cakeIndex = index;
         this.CHname = "月饼";
         self.setView(index);
     }
@@ -645,11 +645,11 @@ var Result = (function (nameSpeace) {
     // });
     return {
         init: function () {
-            //return init(30, "canvas", 640, 960, main);
-            return LInit(30, "canvas", 640, 960, main, LEvent.INIT);
+            LInit(30, "canvas", 640, 960, main, LEvent.INIT);
         },
         removeAll: function () {
-            if (sound) { sound.stop(); }
+            if (LGlobal.frameRate) window.clearInterval(LGlobal.frameRate);
+            if (sound) sound.stop();
             if (backLayer) { backLayer.removeAllChild(); backLayer.die(); }
         }
     }

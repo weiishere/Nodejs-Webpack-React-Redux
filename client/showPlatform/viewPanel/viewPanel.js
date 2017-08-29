@@ -883,9 +883,10 @@ var Result = (function (nameSpeace) {
     return {
         init: function () {
             //return LInit(30, "canvas", 640, 960, main, LEvent.INIT);
-            return LInit(30, "canvas_vp", 1200, 650, main, LEvent.INIT);
+            LInit(30, "canvas_vp", 1200, 650, main, LEvent.INIT);
         },
         removeAll: function () {
+            if (LGlobal.frameRate) window.clearInterval(LGlobal.frameRate);
             if (backLayer) {
                 backLayer.removeAllChild();
                 eventBackLayer.die();

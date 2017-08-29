@@ -62,6 +62,8 @@ var Result = (function () {
     var loader;
     var _stageSpeed = stageSpeed;
     function main() {
+        LSystem.screen(0.8);
+        LGlobal.forceRefresh = true;
         STAGE_SETP = 2;//下降速度
         stageSpeed = 70;//增加地板的速度
         dorpSpeed = 10;//初始下落速度
@@ -352,8 +354,8 @@ var Result = (function () {
         self.anime.speed = 0.01;//动作帧速度
     }
     Chara.prototype.onframe = function () {
-        
-        var self = this;console.log(self.speed);
+
+        var self = this; console.log(self.speed);
         self._charaOld = self.y;
         if (self.isJump) {
             self.isAir = true;
@@ -439,11 +441,14 @@ var Result = (function () {
 
     return {
         init: function () {
-            //return init(30, "canvas", 640, 960, main);
-            return init(30, "canvas_dropMan", 400, 640, main,LEvent.INIT);
-            //return LInit(30, "canvas", 640, 960, main, LEvent.INIT);
+            init(30, "canvas_dropMan", 400, 640, main, LEvent.INIT);
         },
-        removeAll: function () { if (backLayer) { backLayer.removeAllChild(); backLayer.die(); backLayer.die(); } }
+        removeAll: function () {
+            if (LGlobal.frameRate) window.clearInterval(LGlobal.frameRate);
+            if (backLayer) {
+                backLayer.removeAllChild(); backLayer.die(); backLayer.die();
+            }
+        }
     }
 
 })({});

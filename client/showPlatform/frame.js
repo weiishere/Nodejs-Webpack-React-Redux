@@ -33,8 +33,8 @@ class Frame extends Component {
         }
         return (
             <Layout>
-                <Header style={{ height: '80px', backgroundColor: "#23252B", padding: '0 20px' }}>
-                    <div style={{ position: 'absolute', top: 26, color: '#fff', zIndex: 10000, height: 25, lineHeight: '25px' }}>
+                <Header style={{ height: '50px', backgroundColor: "#23252B", padding: '0 5px' }}>
+                    <div style={{ position: 'absolute', top: 5, color: '#fff', zIndex: 10000, height: 25, lineHeight: '25px' }}>
                         <div>
                             <img src='//img14.360buyimg.com/wympay/jfs/t3748/300/108123672/4451/c42d7358/57ff5e34N6e63c570.png' />
                         </div>
