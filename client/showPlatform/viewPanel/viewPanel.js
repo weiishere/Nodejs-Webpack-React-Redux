@@ -313,7 +313,7 @@ var Result = (function (nameSpeace) {
         exp.Trip = Trip;
     })(tool);
     function main() {
-        LSystem.screen(0.9);
+        LSystem.screen(0.8);
         backLayer = tool.createSprite();
         backLayer.graphics.drawRect(1, "#cccccc", [0, 0, LGlobal.width, LGlobal.height], true, "#000000");
         eventBackLayer = tool.createSprite();
@@ -349,7 +349,7 @@ var Result = (function (nameSpeace) {
         indexPage: function () {
             var returnPage = new LSprite();
             //写入左部统计图
-            var statistical = new Statistical('品质趋势', 2, 2, 360, 205, { radius: 0, space: [28, 60, 40, 40] });
+            var statistical = new Statistical('品质趋势', 2, 2, 360, 205, { radius: 0, space: [28, 120, 40, 40] });
             global.statisticalLayerLeft.addChild(statistical);
             var source1 = new Source(
                 { numberColor: "#fff", numberPostion: "in", bottomName: "柱体1" },
@@ -532,10 +532,9 @@ var Result = (function (nameSpeace) {
         // self.y = 0;
         // self.w = 0;
         // self.h = 0;
-        self.title = title; //self.radius = radius;
+        self.title = title||'示例图'; //self.radius = radius;
         self.x = x; self.y = y;
         self.w = w; self.h = h;
-        self.title = '示例图';
         self.radius = 0;
         self.isShowBottom = true;
         self.panel_color = "#eeeeee";
