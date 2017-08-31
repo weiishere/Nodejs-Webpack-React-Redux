@@ -247,7 +247,8 @@ var Result = (function (nameSpeace) {
                 x: 0,
                 y: 0,
                 color: "#666",
-                size: 16
+                size: 16,
+                width: 0
             }, option || {});
             var _text = new LTextField();
             _text.text = text;
@@ -255,6 +256,12 @@ var Result = (function (nameSpeace) {
             _text.color = _option.color;
             _text.y = _option.y;
             _text.x = _option.x;
+            if (_option.width != 0) {
+                if (_text.getWidth() > _option.width) {
+                    _text.setWordWrap(true);
+                    _text.width = _option.width;
+                }
+            }
             if (callBack) { callBack.call(_text); }
             return _text;
         }
@@ -349,7 +356,7 @@ var Result = (function (nameSpeace) {
         indexPage: function () {
             var returnPage = new LSprite();
             //写入左部统计图
-            var statistical = new Statistical('品质趋势', 2, 2, 360, 205, { radius: 0, space: [28, 120, 40, 40] });
+            var statistical = new Statistical('品质趋势2', 2, 2, 360, 205, { radius: 0, space: [28, 60, 40, 40] });
             global.statisticalLayerLeft.addChild(statistical);
             var source1 = new Source(
                 { numberColor: "#fff", numberPostion: "in", bottomName: "柱体1" },
@@ -504,7 +511,7 @@ var Result = (function (nameSpeace) {
             //this.graphics.drawRoundRect(0, "#999999", [0, 0, self.w - 275, 55, 0], true, "#eee");
             this.addChild(tool.createText("机型：" + self.data.name, { x: 5, y: 5, size: 10 }));
             this.graphics.drawRoundRect(1, "#999", [5.5, 28.5, self.w - 285, 20, 4], true, "#fff");
-            if (self.data.progress[0] != 0) { this.graphics.drawRoundRect(1, "#339933", [6.5, 29.5, (self.w - 275) * (self.data.progress[0] / self.data.progress[1]), 18, 3], true, "#33cc33"); }
+            if (self.data.progress[0] != 0) { this.graphics.drawRoundRect(1, "#339933", [6.5, 29.5, (self.w - 285) * (self.data.progress[0] / self.data.progress[1]), 18, 3], true, "#33cc33"); }
             this.addChild(tool.createText(self.data.progress[0] + "/" + self.data.progress[1], { y: 31.5, color: "#000", size: 10 }, function () { this.align(_s); }));
         }));
         self.addChild(tool.createSprite({ x: self.w - 200, y: 7 }, function () {
@@ -525,14 +532,12 @@ var Result = (function (nameSpeace) {
         base(this, LSprite, []);
         var self = this;
         self.option = $.extend({}, _option || {});
-        for (var i in Statistical.prototype) {
-            for (var j in _option) { if (i == j) self[i] = _option[j]; }
-        }
+        
         // self.x = 0;
         // self.y = 0;
         // self.w = 0;
         // self.h = 0;
-        self.title = title||'示例图'; //self.radius = radius;
+        self.title = title || '示例图'; //self.radius = radius;
         self.x = x; self.y = y;
         self.w = w; self.h = h;
         self.radius = 0;
@@ -550,6 +555,10 @@ var Result = (function (nameSpeace) {
         self.axis_x_scale = 1;//x轴字体缩放
         //self.mainData = { axis_x: ['12:30','13:00','13:30','14:00','14:30','15:00'], data: [3, 6, 7, 6, 9, 16] };//曲线数据，max为X轴最大值，data为Y数据
         self.graphData = { max: 12, data: [5, 8, 7, 6, 9, 11] };//曲线数据，用于曲线不共享数据的情况
+        for (var i in self) {
+            for (var j in _option) { if (i == j) {self[i] = _option[j];} }
+        }
+        
         self.setView();
     }
 
@@ -597,27 +606,33 @@ var Result = (function (nameSpeace) {
                 }
                 max_y2 = getxMax(source.data.dataForCurves[_index].max(), self.unit_count_y);
             }
+
             var _max_y = max_y1 > max_y2 ? max_y1 : max_y2;
             var axisUnit_y = _max_y / self.unit_count_y;//Y轴每个刻度的量（先获取Y轴的最大可除值）
             var y_length = self.h - self.space[0] - self.space[2];//Y轴长度
+            var r = /^[0-9]*[1-9][0-9]*$/;
             for (var i = 0; i <= self.unit_count_y; i++) {
-                var _kedu = tool.createText(axisUnit_y * i, { x: self.x, y: self.h - self.space[2] - (y_length / self.unit_count_y) * i, size: 12 });
+                var keduValue = i === 0 ? 0 : (r.test(axisUnit_y * i) ? (axisUnit_y * i) : (axisUnit_y * i).toFixed(2));
+                var _kedu = tool.createText(keduValue, { x: self.x, y: self.h - self.space[2] - (y_length / self.unit_count_y) * i, size: 12 });
                 this.addChild(_kedu);
                 _kedu.x = self.space[3] - _kedu.getWidth() - 6;
                 _kedu.y -= _kedu.getHeight() / 2 + 1;
+
                 if (i != 0) {
-                    this.graphics.drawLine(1, "#ddd", [self.x + self.space[3], parseInt(self.h - self.space[2] - (y_length / self.unit_count_y) * i) + 0.5, self.w - self.space[1] + x_length, parseInt(self.h - self.space[2] - (y_length / self.unit_count_y) * i) + 0.5]);
-                    this.graphics.drawLine(1, "#666", [self.x + self.space[3] - 2, parseInt(self.h - self.space[2] - (y_length / self.unit_count_y) * i) + 0.5, self.x + self.space[3] - 5, parseInt(self.h - self.space[2] - (y_length / self.unit_count_y) * i) + 0.5]);
+
+                    this.graphics.drawLine(1, "#ddd", [self.space[3] + 1, parseInt(self.h - self.space[2] - (y_length / self.unit_count_y) * i) + 0.5, self.w - self.space[1] + x_length, parseInt(self.h - self.space[2] - (y_length / self.unit_count_y) * i) + 0.5]);
+                    //this.graphics.drawLine(1, "#666", [self.x + self.space[3] - 2, parseInt(self.h - self.space[2] - (y_length / self.unit_count_y) * i) + 0.5, self.x + self.space[3] - 5, parseInt(self.h - self.space[2] - (y_length / self.unit_count_y) * i) + 0.5]);
                 }
             }
             var cylinder; var curvesArr = [];
             //得到X轴刻度值和网格线
             for (var i = 1; i <= source.data.axis_x.length; i++) {
-                var _kedu = tool.createText(source.data.axis_x[i - 1], { x: self.space[3] + x_length * i, y: self.h - self.space[2] + 6, size: 12 });
+                var _kedu = tool.createText(source.data.axis_x[i - 1], { x: self.space[3] + x_length * i, y: self.h - self.space[2] + 6, size: 12, width: x_length });
                 this.addChild(_kedu); _kedu.scaleX = _kedu.scaleY = self.axis_x_scale;
                 _kedu.x -= _kedu.getWidth() / 2;
                 this.graphics.drawLine(1, "#ddd", [parseInt(self.space[3] + x_length * i) + 0.5, self.h - self.space[2], parseInt(self.space[3] + x_length * i) + 0.5, self.space[0]]);//网格线
                 this.graphics.drawLine(1, "#666", [parseInt(self.space[3] + x_length * i) + 0.5, self.h - self.space[2], parseInt(self.space[3] + x_length * i) + 0.5, self.h - self.space[2] + 4]);//刻度值
+
                 //加入圆柱
                 if (source.data.dataForCylinder) {
                     var trueHeight = (source.data.dataForCylinder[i - 1] / _max_y) * (y_length);
@@ -677,11 +692,11 @@ var Result = (function (nameSpeace) {
                 if (source.data.dataForCylinder) {
                     bottomPanel.addChild(tool.createSprite({}, function () {
                         this.graphics.drawRect(1, self.borderColor, [0, 0.5, 20.5, 10], true, cylinder.canvasGradient);
-                        this.rotate = 180;
-                        this.x += this.getWidth(); this.y += this.getHeight() + 2;
+                        this.rotate = 180; this.x += this.getWidth(); this.y += this.getHeight() + 2;
                     }));
                     bottomPanel.addChild(tool.createText(cylinder.bottomName, { size: 10 }, function () { this.x = 25; }));
                 }
+
                 if (source.data.dataForCurves) {
                     for (var j = 0; j < source.data.dataForCurves.length; j++) {
                         bottomPanel.addChild(tool.createSprite({}, function () {
@@ -696,8 +711,7 @@ var Result = (function (nameSpeace) {
         }));
         if (self.isShowBottom) {
             self.panelLayer.addChild(bottomPanel);
-            bottomPanel.align(self.panelLayer); 
-            bottomPanel.y = self.h - 14;
+            bottomPanel.align(self.panelLayer); bottomPanel.y = self.h - 16;
         }
     }
     //数据源
